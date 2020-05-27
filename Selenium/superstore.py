@@ -15,6 +15,7 @@ webpage = webpage_res.content
 # html = driver.page_source
 # soup = BeautifulSoup(html, 'html.parser')
 soup = BeautifulSoup(webpage, 'html.parser')
+print(soup)
 
 # r = soup.select('.product-tile.product-tile--add-to-list-button.product-tile--marketplace')
 r = soup.select('product-name__item')
