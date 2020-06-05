@@ -11,6 +11,7 @@
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <title>hairstyle Matching</title>
+    <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -57,9 +58,9 @@
 
 
 
-    <div>Teachable Machine Image Model</div>
-    <button type="button" onclick="init()">Start</button>
-    <button type="button" onclick="predict()">Predict</button>
+    <!-- <div>Teachable Machine Image Model</div> -->
+    <!-- <button type="button" onclick="init()">Start</button> -->
+    <!-- <button type="button" onclick="predict()">Predict</button> -->
     <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <div class="file-upload container">
         <!-- <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add
@@ -74,6 +75,8 @@
         </div>
         <div class="file-upload-content">
             <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <p class="result-massage"></p>
+            <div id="label-container"></div>
             <div class="image-title-wrap">
                 <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
                         class="image-title">Uploaded Image</span></button>
@@ -81,7 +84,7 @@
         </div>
     </div>
     <div id="webcam-container"></div>
-    <div id="label-container"></div>
+    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -106,14 +109,14 @@
 
                 reader.onload = function (e) {
                     $('.image-upload-wrap').hide();
-
                     $('.file-upload-image').attr('src', e.target.result);
                     $('.file-upload-content').show();
-
                     $('.image-title').html(input.files[0].name);
                 };
-
                 reader.readAsDataURL(input.files[0]);
+                init().then(()=> {
+                    predict();
+                });
 
             } else {
                 removeUpload();
@@ -182,11 +185,30 @@
             // predict can take in an image, video or canvas html element
             var myImage = document.getElementById("face-image")
             const prediction = await model.predict(myImage, false);
+            prediction.sort((a,b) => parseFloat(b.probability) - parseFloat(a.probability));
+            let msg;
+            switch(prediction[0].className) {
+                case "Long":
+                    msg = "Lovely! Long hair might be good for you"
+                    break;               
+                case "midlong":
+                    msg = "Sweet! Mid-long hair might be good for you"
+                    break;
+                case "Short":
+                    msg = "Cool! Short hair might be good for you"
+                    break;                
+                case "bobbed":
+                    msg = "Awesome! Bobbed hair might be good for you"
+                    break;                
+                default:
+            }
+            $('.result-massage').html(msg);
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =
-                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
+                    prediction[i].className.toUpperCase() + ": " + prediction[i].probability.toFixed(2);
+                labelContainer.childNodes[i].innerHTML = classPrediction;                
             }
+
         }
     </script>
 
