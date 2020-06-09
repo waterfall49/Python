@@ -12,6 +12,9 @@
 
     <title>hairstyle Matching</title>
     <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5edfc0d9de4aad05"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -34,9 +37,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Features</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                 </li>
@@ -47,7 +50,7 @@
 
     <section class="section">
         <h1 class="title">Hair style test (female)</h1>
-        <h3 class="subtitle">What kind of hairstyle is better for me?</h3>
+        <h2 class="subtitle">What kind of hairstyle is better for me?</h2>
     </section>
     <!-- <section class="youtube">
         <div class="youtube-cover"><a href="" class="youtube-link">youtube</a><img src="" alt="" class="youtube-icon"></div>
@@ -70,13 +73,15 @@
             <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
             <div class="drag-text mt-5 mb-5">
                 <img src="img/upload.svg" class="upload" alt="upload">
-                <h4 class="pt-3">Drag and drop a file or select add Image</h4>
+                <h3 class="pt-3">Drag and drop a file or select add Image</h3>
             </div>
         </div>
         <div class="file-upload-content">
             <img class="file-upload-image" id="face-image" src="#" alt="your image" />
             <p class="result-massage"></p>
-            <div id="label-container"></div>
+            <div id="label-container"></div>            
+            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+            <div class="addthis_inline_share_toolbox"></div>           
             <div class="image-title-wrap">
                 <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
                         class="image-title">Uploaded Image</span></button>
@@ -168,10 +173,15 @@
 
             // append elements to the DOM
             // document.getElementById("webcam-container").appendChild(webcam.canvas);
-            labelContainer = document.getElementById("label-container");
-            for (let i = 0; i < maxPredictions; i++) { // and class labels
-                labelContainer.appendChild(document.createElement("div"));
-            }
+
+
+            // labelContainer = document.getElementById("label-container");
+            // for (let i = 0; i < maxPredictions; i++) { // and class labels
+            //     var chart = labelContainer.appendChild(document.createElement("div"));
+            //     chart.className = "progress";
+            //     var lowchart = chart.appendChild(document.createElement("div"));
+            //     lowchart.className = "progress-bar";
+            // }
         }
 
         // async function loop() {
@@ -179,6 +189,7 @@
         //     await predict();
         //     window.requestAnimationFrame(loop);
         // }
+        labelContainer = document.getElementById("label-container");
 
         // run the webcam image through the image model
         async function predict() {
@@ -203,10 +214,38 @@
                 default:
             }
             $('.result-massage').html(msg);
+
             for (let i = 0; i < maxPredictions; i++) {
-                const classPrediction =
-                    prediction[i].className.toUpperCase() + ": " + prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;                
+                // let myBar = document.createElement("bar");
+                var result = prediction[i].probability.toFixed(2) * 100;
+                var barwidth = result;
+                if (result < 1){
+                    barwidth = 0;
+                } else if (result < 5) {
+                    barwidth = 5;
+                }
+
+                var wrapper = labelContainer.appendChild(document.createElement("div"));
+                wrapper.className = "wrapper";
+                var label = wrapper.appendChild(document.createElement("div"));
+                label.className = "label";
+                var chart = wrapper.appendChild(document.createElement("div"));
+                chart.className = "progress";
+                var progressBar = chart.appendChild(document.createElement("div"));
+                progressBar.className = "progress-bar";
+                // var label = chart.appendChild(document.createElement("div"));
+                // label.className = "label";
+                label.textContent = prediction[i].className.toUpperCase();
+                progressBar.style.width = barwidth+'%';
+                progressBar.role = 'progressbar';
+                // progressBar.setAttribute("role", "progressbar");
+                // progressBar.setAttribute("aria-valuemin", 0);
+                // progressBar.setAttribute("aria-valuemax", 100);
+                progressBar.textContent = result +'%';
+
+                // const classPrediction =
+                //     prediction[i].className.toUpperCase() + ": " + prediction[i].probability.toFixed(2);
+                // labelContainer.childNodes[i].innerHTML = classPrediction;                
             }
 
         }

@@ -15,6 +15,10 @@ body {
     background-color: #f6f7fa;
     padding: 13% 0;
 }
+
+.file-upload.container{
+  margin-top: 30px;
+}
   
 .file-upload-btn {
     width: 100%;
@@ -86,7 +90,7 @@ body {
     text-align: center;
   }
   
-  .drag-text h4 {
+  .drag-text h3 {
     font-weight: 100;
     /* text-transform: uppercase; */
     color: grey;
@@ -115,6 +119,7 @@ body {
     outline: none;
     text-transform: uppercase;
     font-weight: 700;
+    margin-top: 30px;
   }
   
   .remove-image:hover {
@@ -152,16 +157,60 @@ body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     line-height: 1.68;
     text-align: center;
-    color: #cd4535;
+    color: #3B6568;
   }
 
 .subtitle {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     line-height: 1.53;
     text-align: center;
-    color: #cd4535;
+    color: #62A1A7;
 }
 
+.result-massage {
+  font-size: 1.5rem;
+  color: #87455A;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+#label-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.progress {
+  margin-top: 0.3em;
+  height: 30px;
+  /* border-radius: 10%; */
+  grid-column: 2 / 6;
+  grid-row: 1;
+  /* color: #F7AF9D; */
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 20px;
+  grid-auto-rows: minmax(50px, auto);
+}
+
+.label {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-top: 6%;
+  color: #F4937B;
+}
+
+.progress-bar {
+  border-radius: 1%;
+  background-color: #F7AF9D;
+  font-size: 1.2rem;
+}
 
 /* On screens that are 600px or less, set the background color to olive */
 @media screen and (max-width: 600px) {
